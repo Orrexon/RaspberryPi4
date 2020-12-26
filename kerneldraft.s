@@ -99,11 +99,18 @@ ARM_VC_BASE: .word 0xB880
 ARM_VC_OFFSET_1: .word 0x20
 
 .balign 4
-ARMC_BASE: .word 0x7e00b000
+ARMC_BASE: .word 0x3F000000 @ 0x7e00b000
 .balign 4
 ARMC_IRQ0_SET: .word 0x210
 .balign 4
 ARMC_IRQ0_CLR: .word 0x220
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ARM core mailboxes
+@TODO Oscar: base addresses are defined in 35 bit, (an extra hex-digit) 
+@not 32 bit, according to documentation.
+@How to work with that ????
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 .balign 4 
 M_BOX_ARM_LOCAL_BASE: .word 0x4C000000
