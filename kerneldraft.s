@@ -61,6 +61,7 @@ _wait:
 	str lr, [r4]
 
 	mov r4, #0
+	mov r6, #1
 	hold_on$:
 		add r4, r4, #1
 		cmp r4, r6, ROR #12 @almost a milion 
