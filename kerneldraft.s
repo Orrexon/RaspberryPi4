@@ -22,7 +22,7 @@ _start:
 
 		message .req r1
 		ldr message, =PropertyInfo
-		add message, #8
+		add message, message, #8
 		ldr r5, =ARM_VC_OFFSET_1
 		ldr r6, [r5]
 		str message, [mailbox, r6]
@@ -40,7 +40,7 @@ _start:
 		
 		message .req r1
 		ldr message, =PropertyInfo
-		add message, #8	
+		add message, message, #8	
 		ldr r5, =ARM_VC_OFFSET_1
 		ldr r6, [r5]
 		str message, [mailbox, r6]
@@ -113,9 +113,9 @@ ARMC_IRQ0_CLR: .word 0x220
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 .balign 4 
-M_BOX_ARM_LOCAL_BASE: .word 0x4C000000
+M_BOX_ARM_LOCAL_BASE: .word 0xC0000000 @'full 35 bit' addr 0x4_C000_0000 
 .balign 4
-M_BOX_ARM_LOCAL_BASE_LOW: .word 0xFF800000
+M_BOX_ARM_LOCAL_BASE_LOW: .word 0xF8000000 @full 35 addr 0xF_F800_0000 
 .balign 4
 M_BOX_OFFSET_0: .word 0x80
 .balign 4
