@@ -49,7 +49,7 @@ _start:
 		bl _wait
 
 	add r3, r3, #1
-	cmp r3, #10
+	cmp r3, #30
 	bne blink$
 	/*end*/
 	.unreq mailbox
@@ -64,7 +64,7 @@ _wait:
 	mov r6, #1
 	hold_on$:
 		add r4, r4, #1
-		cmp r4, r6, ROR #12 @almost a milion 
+		cmp r4, r6, ROR #6 
 	bne hold_on$
 
 	ldr lr, =wait_bu
@@ -110,7 +110,6 @@ ARMC_IRQ0_CLR: .word 0x220
 @ARM core mailboxes
 @TODO Oscar: base addresses are defined in 35 bit, (an extra hex-digit) 
 @not 32 bit, according to documentation.
-@How to work with that ????
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 .balign 4 
