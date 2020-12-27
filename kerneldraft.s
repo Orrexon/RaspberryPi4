@@ -4,7 +4,7 @@
 _start:
 @	send message to GPU
 	mailbox .req r0 @make alias mailbox for r0
-	ldr r1, =ARMC_BASE @PI3_M_BOX_BASE  @ARM_PERIF_BASE
+	ldr r1, =PI3_M_BOX_BASE @ARMC_BASE  @ARM_PERIF_BASE
 	ldr r1, [r1]
 	ldr r2, =ARM_VC_BASE
 	ldr r2, [r2]
