@@ -3,7 +3,7 @@
 
 main_asm:
 	bl uart_init
-	x1, =hello_world
+	ldr w1, =hello_world
 	bl uart_writeText
 
 	while_true:
@@ -18,25 +18,25 @@ uart_init:
 	
 
 .global uart_writetext
-uart_writetext:
+uart_writeText:
 
 
 .section .data
 .balign 4
-PERIPH_BASE 	.word 0xFE000000
+PERIPH_BASE: 	.word 0xFE000000
 .balign 4
-GPFSEL0_OFF 	.word 0x200000
+GPFSEL0_OFF: 	.word 0x200000
 .balign 4
-GPSET0_OFF 	.word 0x20001C
+GPSET0_OFF: 	.word 0x20001C
 .balign 4
-GPCLR0_OFF 	.word 0x200028
+GPCLR0_OFF: 	.word 0x200028
 .balign 4
-GPPUPPDN0_OFF 	.word 0x2000E4
+GPPUPPDN0_OFF: 	.word 0x2000E4
 
 .balign 4
-GPIO_MAX_PIN 		.word 53
+GPIO_MAX_PIN: 		.word 53
 .balign 4
-GPIO_FUNCTION_ALT5 	.word 2
+GPIO_FUNCTION_ALT5: 	.word 2
 
 .balign 4
-PULL_NONE .word 0
+PULL_NONE: .word 0
