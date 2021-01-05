@@ -2,6 +2,7 @@
 .global main_asm
 
 main_asm:
+	bl _blink
 	bl uart_init
 	ldr w1, =hello_world
 	bl uart_writeText
