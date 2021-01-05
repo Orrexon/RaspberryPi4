@@ -16,8 +16,11 @@ boot.o: boot.s
 kernel.o: kernel.s
 	as $(ASFLAGS) kernel.s -o kernel.o
 
-kernel8.img: boot.o kernel.o 
-	ld -nostdlib -nostartfiles kernel.o boot.o -T link.ld -o kernel8.elf
+blink.o: blink.s
+	as $(ASFLAGS) blink.s -o blink.o
+
+kernel8.img: boot.o blink.o kernel.o 
+	ld -nostdlib -nostartfiles blink.o kernel.o boot.o -T link.ld -o kernel8.elf
 	objcopy -O binary kernel8.elf kernel8.img
 
 clean:
