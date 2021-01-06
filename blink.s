@@ -7,7 +7,7 @@ _blink:
 //	send message to GPU
 //	# make alias mailbox for r0
 	mailbox .req x0 
-	ldr x1, =ARM_PERIF_BASE 
+	ldr x1, =ARMC_BASE
 	ldr x1, [x1]
 	ldr x2, =ARM_VC_BASE
 	ldr x2, [x2]
@@ -116,8 +116,8 @@ blink_buffer: .word 0
 .balign 4
 ARM_PERIF_BASE: .word 0xFE000000
 .balign 4
-ARM_VC_BASE: .word 0xB880
-
+//ARM_VC_BASE: .word 0xB880
+ARM_VC_BASE: .word 0x0
 .balign 4
 ARM_VC_OFFSET_1: .word 0x20
 .balign 4
