@@ -106,42 +106,11 @@ str lr, [x0]
 	ldr x3, =GPPUPPDN0_OFF
 	ldr x3, [x3]
 	add x2, x2, x3
-	mov x3, #1
+	mov x3, #2
 	ldr x4, =GPIO_MAX_PIN
 	ldr x4, [x4]
 
-//make function and call it here
-//function body:
-	lsl x5, x3, #2
-	sub x5, x5, #1
-
-//implement the following 2 rows some day when a more secure function is required
-//if (pin_number > field_max) return 0;
-//if (value > field_mask) return 0;
-	mov x3, #32
-	mov x6, #2
-//num_fields x7
-	udiv x7, x3, x6
-//pin_number x0 / num_fields x7
-	udiv x8, x0, x7
-//reg = base + x8
-	add x9, x2, x8
-//reg *= 4
-	mov x15, #4
-	mul x9, x9, x15
-//shift = (pin_number % num_fields) remainder-> ((x11 = pin_numberx0 - (x8 * num_fieldsx7)
-	msub x11, x8, x7, x0
-//shift *= field_size
-	mov x15, #2
-	mul x11, x11, x15
-//curval = *reg
-	ldr x12, [x9]
-	lsl x13, x5, x11
-	bic x12, x12, x13
-	lsl x14, x1, x11
-	orr x12, x12, x14
-	str x12, [x9]
-	
+	bl gpio_call
 //set pin to alt function5
 	mov x0, #14
 	ldr x1, =GPIO_FUNCTION_ALT5
@@ -151,41 +120,11 @@ str lr, [x0]
 	ldr x3, =GPFSEL0_OFF
 	ldr x3, [x3]
 	add x2, x2, x3
-	mov x3, #1
+	mov x3, #3
 	ldr x4, =GPIO_MAX_PIN
 	ldr x4, [x4]
 
-//make function and call it here
-//function body:
-	lsl x5, x3, #3
-	sub x5, x5, #1
-
-//implement the following 2 rows some day when a more secure function is required
-//if (pin_number > field_max) return 0;
-//if (value > field_mask) return 0;
-	mov x3, #32
-	mov x6, #3
-//num_fields x7
-	udiv x7, x3, x6
-//pin_number x0 / num_fields x7
-	udiv x8, x0, x7
-//reg = base + x8
-	add x9, x2, x8
-//reg *= 4
-	mov x15, #4
-	mul x9, x9, x15
-//shift = (pin_number % num_fields) remainder-> ((x11 = pin_numberx0 - (x8 * num_fieldsx7)
-	msub x11, x8, x7, x0
-//shift *= field_size
-	mov x15, #3
-	mul x11, x11, x15
-//curval = *reg
-	ldr x12, [x9]
-	lsl x13, x5, x11
-	bic x12, x12, x13
-	lsl x14, x1, x11
-	orr x12, x12, x14
-	str x12, [x9]
+	bl gpio_call
 
 	//set pin 14 and 15 to pull none and then alt function 5
 	mov x0, #15
@@ -196,41 +135,11 @@ str lr, [x0]
 	ldr x3, =GPPUPPDN0_OFF
 	ldr x3, [x3]
 	add x2, x2, x3
-	mov x3, #1
+	mov x3, #2
 	ldr x4, =GPIO_MAX_PIN
 	ldr x4, [x4]
 
-//make function and call it here
-//function body:
-	lsl x5, x3, #2
-	sub x5, x5, #1
-
-//implement the following 2 rows some day when a more secure function is required
-//if (pin_number > field_max) return 0;
-//if (value > field_mask) return 0;
-	mov x3, #32
-	mov x6, #2
-//num_fields x7
-	udiv x7, x3, x6
-//pin_number x0 / num_fields x7
-	udiv x8, x0, x7
-//reg = base + x8
-	add x9, x2, x8
-//reg *= 4
-	mov x15, #4
-	mul x9, x9, x15
-//shift = (pin_number % num_fields) remainder-> ((x11 = pin_numberx0 - (x8 * num_fieldsx7)
-	msub x11, x8, x7, x0
-//shift *= field_size
-	mov x15, #2
-	mul x11, x11, x15
-//curval = *reg
-	ldr x12, [x9]
-	lsl x13, x5, x11
-	bic x12, x12, x13
-	lsl x14, x1, x11
-	orr x12, x12, x14
-	str x12, [x9]
+	bl gpio_call
 	
 //set pin to alt function5
 	mov x0, #15
@@ -241,34 +150,53 @@ str lr, [x0]
 	ldr x3, =GPFSEL0_OFF
 	ldr x3, [x3]
 	add x2, x2, x3
-	mov x3, #1
+	mov x3, #3
 	ldr x4, =GPIO_MAX_PIN
 	ldr x4, [x4]
 
-//make function and call it here
-//function body:
-	lsl x5, x3, #3
+	bl gpio_call
+
+//now write to aux_mu_cntl_reg to enable RX/TX
+	ldr x0, =AUX_BASE
+	ldr x0, [x0]
+	ldr x1, =AUX_MU_CNTL_REG_OFFSET
+	ldr x1, [x1]
+	add x2, x0, x1
+	mov x3, #3
+	str x3, [x2]	
+
+ldr lr, =uart_init_addr
+ldr lr, [lr]
+ret lr
+
+
+.global gpio_call
+gpio_call:
+//gpio_call(pin_number, value, base, field_size, field_max)
+ldr x15, =gpio_call_addr
+str lr, [x15]
+	mov x5, #1
+	lsl x5, x5, x3
 	sub x5, x5, #1
 
 //implement the following 2 rows some day when a more secure function is required
 //if (pin_number > field_max) return 0;
 //if (value > field_mask) return 0;
-	mov x3, #32
-	mov x6, #3
+	mov x6, #32
 //num_fields x7
-	udiv x7, x3, x6
+	udiv x7, x6, x3
 //pin_number x0 / num_fields x7
 	udiv x8, x0, x7
+//  x8 *= 4
+	mov x15, #4
+	mul x8, x8, x15
 //reg = base + x8
 	add x9, x2, x8
-//reg *= 4
-	mov x15, #4
-	mul x9, x9, x15
+	
 //shift = (pin_number % num_fields) remainder-> ((x11 = pin_numberx0 - (x8 * num_fieldsx7)
 	msub x11, x8, x7, x0
 //shift *= field_size
-	mov x15, #3
-	mul x11, x11, x15
+	mul x11, x11, x3
 //curval = *reg
 	ldr x12, [x9]
 	lsl x13, x5, x11
@@ -276,19 +204,11 @@ str lr, [x0]
 	lsl x14, x1, x11
 	orr x12, x12, x14
 	str x12, [x9]
-//now write to aux_mu_cntl_reg to enable RX/TX
-	ldr x0, =AUX_BASE
-	ldr x0, [x0]
-	ldr x1, =AUX_MU_CNTL_REG_OFFSET
-	ldr x1, [x1]
-	add x2, x0, x1
-	mov x15, #3
-	str x15, [x2]	
 
-ldr lr, =uart_init_addr
+
+ldr lr, =gpio_call_addr
 ldr lr, [lr]
 ret lr
-
 
 .global uart_writeText
 uart_writeText:
@@ -301,7 +221,8 @@ str lr, [x15]
 			ldr x2, =AUX_MU_LSR_REG_OFFSET
 			ldr x2, [x2]
 			add x3, x1, x2
-			and x4, x3, #0x20
+			ldr x5, [x3]
+			and x4, x5, #0x20
 			CBZ x4, _while_write_not_ready
  
 		ldr x1, =AUX_BASE
@@ -313,7 +234,7 @@ str lr, [x15]
 		str x15, [x3]
 		add x0, x0, #1
 		ldr x15, [x0]
-		CBZ x15, _while_buffer
+		CBNZ x15, _while_buffer
 ldr lr, =uart_writeText_addr
 ldr lr, [lr]
 ret lr
@@ -323,6 +244,9 @@ ret lr
 uart_init_addr: .word 0
 .balign 4
 uart_writeText_addr: .word 0
+.balign 4
+gpio_call_addr: .word 0
+
 //extract to another file
 //GPIO
 .balign 4
