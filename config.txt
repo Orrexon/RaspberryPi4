@@ -64,3 +64,4 @@ max_framebuffers=2
 [all]
 #dtoverlay=vc4-fkms-v3d
 core_freq_min=500
+enable_uart=1
