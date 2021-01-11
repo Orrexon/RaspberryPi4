@@ -1,6 +1,6 @@
 .section .text
 .global main_asm
-.include "ioasm.s" 
+ 
 main_asm:
 	bl uart_init
 	ldr x0, =hello_world
@@ -9,3 +9,5 @@ main_asm:
 	while_true:
 		b while_true
 
+.section .data
+hello_world: .asciz "Hello world\r\n"

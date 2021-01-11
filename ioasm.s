@@ -1,6 +1,4 @@
 
-.section .data
-hello_world: .asciz "Hello world\r\n"
 
 .section .text
 .global uart_init
