@@ -1,4 +1,4 @@
-.section .text
+.text
 .global main_asm
  
 main_asm:
@@ -9,5 +9,5 @@ main_asm:
 	while_true:
 		b while_true
 
-.section .data
+.data
 hello_world: .asciz "Hello world\r\n"
