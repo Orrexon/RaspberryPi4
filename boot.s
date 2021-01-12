@@ -31,5 +31,6 @@ THREE:	cbz x2, FOUR
 
 FOUR:	
 	#jump to program
-	bl main_asm 
+//	bl main_asm
+	bl main
 	b ONE

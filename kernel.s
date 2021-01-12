@@ -1,6 +1,6 @@
 .text
 .global main_asm
- 
+
 main_asm:
 	bl uart_init
 	ldr x0, =hello_world

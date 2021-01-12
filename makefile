@@ -2,7 +2,7 @@ CFILES = $(wildcard *.c)
 OFILESC = $(CFILES: .c=.o)
 SFILES = $(wildcard *.s)
 OFILESS = $(SFILES: .s=.o)
-GCCFLAGS =-mtune=cortex-a72 -march=armv8-a -Wall -o2 -ffreestanding -nostdinc -nostdlib -nostartfiles
+GCCFLAGS = -Wall -o2 -ffreestanding -nostdinc -nostdlib -nostartfiles
 ASFLAGS =
  
 all: clean kernel8.img
@@ -16,11 +16,14 @@ boot.o: boot.s
 kernel.o: kernel.s
 	as $(ASFLAGS) kernel.s -o kernel.o
 
-ioasm.o: ioasm.s
-	as $(ASFLAGS) ioasm.s -o ioasm.o
+kernelc.o: kernelc.c
+	gcc $(GCCFLAGS) -c kernelc.c -o kernelc.o
 
-kernel8.img: kernel.o ioasm.o boot.o 
-	ld -nostdlib -nostartfiles boot.o ioasm.o kernel.o -T link.ld -o kernel8.elf
+ioc.o: ioc.c
+	gcc $(GCCFLAGS) -c ioc.c -o ioc.o
+
+kernel8.img: kernelc.o ioc.o boot.o 
+	ld -nostdlib -nostartfiles boot.o ioc.o kernelc.o -T link.ld -o kernel8.elf
 	objcopy -O binary kernel8.elf kernel8.img
 
 clean:
