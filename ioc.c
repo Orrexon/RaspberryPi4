@@ -80,7 +80,6 @@ enum {
 
 void uart_init_c() {
     mmio_write(AUX_ENABLES, 1); //enable UART1
-//    mmio_write(AUX_MU_IER_REG, 0);
     mmio_write(AUX_MU_CNTL_REG, 0);
     mmio_write(AUX_MU_LCR_REG, 3); //8 bits
     mmio_write(AUX_MU_MCR_REG, 0);
@@ -92,6 +91,9 @@ void uart_init_c() {
     mmio_write(AUX_MU_CNTL_REG, 3); //enable RX/TX
 }
 
+//this function is only increasing amount of code, 
+//the info can be provided via comment. This is also extra branching. 
+//yes not a big deal but it should always be noted 
 unsigned int uart_isWriteByteReady() 
 { return mmio_read(AUX_MU_LSR_REG) & 0x20; }
 
@@ -102,7 +104,6 @@ void uart_writeByteBlockingActual(unsigned char ch) {
 
 void uart_write_text_c(char *buffer) {
     while (*buffer) {
-//       if (*buffer == '\n') uart_writeByteBlockingActual('\r');
        uart_writeByteBlockingActual(*buffer++);
     }
 }
