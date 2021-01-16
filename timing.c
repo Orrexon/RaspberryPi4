@@ -15,7 +15,7 @@ void wait_millisec(unsigned int n)
 	//read current counter
 	asm volatile ("mrs %0, cntpct_el0" : "=r"(time));
 	//calculate expire value for counter
-	time += ((freq/1000)*n)/1000;
+	time += ((freq/1000)*n)/10;
 	do
 	{
 		asm volatile ("mrs %0, cntpct_el0" : "=r"(r));
