@@ -1,9 +1,17 @@
-void wait_msec(unsigned int n)
+unsigned long freq = 0;
+void timing_init()
 {
-	register unsigned long freq, time, r;
+	if(!freq)
+	{
+		//get current counter frequency
+		asm volatile ("mrs %0, cntfrq_el0" : "=r"(freq));
+	}
+}
 
-	//get current counter frequency
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(freq));
+void wait_millisec(unsigned int n)
+{
+	register unsigned long time, r;
+
 	//read current counter
 	asm volatile ("mrs %0, cntpct_el0" : "=r"(time));
 	//calculate expire value for counter
@@ -14,8 +22,15 @@ void wait_msec(unsigned int n)
 	}while(r<time);
 }
 
-unsigned long cntpct_el0() {
+unsigned long millisec_count()
+{
 	register unsigned long count;
 	asm volatile ("mrs %0, cntpct_el0" : "=r"(count));
-	return count;
+	return count / (freq/1000);
+}
+unsigned long millisec_count_delta(unsigned long oldCount)
+{
+	register unsigned long count;
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(count));
+	return (count - oldCount) / (freq/1000);
 }

@@ -10,9 +10,6 @@ all: clean kernel8.img
 boot.o: boot.s
 	as $(ASFLAGS) boot.s -o boot.o
 
-%.o: %.c
-	as $(ASFLAGS) -c $< -o $@
-
 kernel.o: kernel.s
 	as $(ASFLAGS) kernel.s -o kernel.o
 
