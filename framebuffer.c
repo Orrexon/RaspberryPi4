@@ -141,24 +141,24 @@ void drawCircle(int x0, int y0, int radius, unsigned char attr, int fill)
     }
 }
 
-void drawChar(unsigned char ch, int x, int y, unsigned char attr)
+void drawChar(unsigned char ch, int x, int y, unsigned char attr, unsigned int zoom)
 {
 	unsigned char* glyph = (unsigned char* )&font + (ch < FONT_NUMGLYPHS ? ch : 0) * FONT_BPG;
 
-	for (unsigned int i = 0; i < FONT_HEIGHT; i++)
+	for (unsigned int i = 1; i < (FONT_HEIGHT*zoom); i++)
 	{
-		for (unsigned int j = 0; j < FONT_WIDTH; j++)
+		for (unsigned int j = 0; j < (FONT_WIDTH*zoom); j++)
 		{
 			unsigned char mask = 1 << j;
 			unsigned char col = (*glyph & mask) ? attr & 0x0F : ((attr & 0xF0) >> 4);
 
 			drawPixel(x+j, y+i, col);
 		}
-		glyph += FONT_BPL;
+		glyph += (i%zoom) ? 0 : FONT_BPL;
 	}
 }
 
-void drawString(int x, int y, char* string, unsigned char attr)
+void drawString(int x, int y, char* string, unsigned char attr, unsigned int zoom)
 {
 	while(*string)
 	{
@@ -173,7 +173,7 @@ void drawString(int x, int y, char* string, unsigned char attr)
 		}
 		else
 		{
-			drawChar(*string, x, y, attr);
+			drawChar(*string, x, y, attr, zoom);
 			x += FONT_WIDTH;
 		}
 		string++;

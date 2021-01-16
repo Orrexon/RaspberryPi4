@@ -28,8 +28,11 @@ framebuffer.o: framebuffer.c
 mailbox_vc.o: mailbox_vc.c
 	gcc $(GCCFLAGS) -c mailbox_vc.c -o mailbox_vc.o
 
-kernel8.img: kernelc.o ioc.o boot.o framebuffer.o mailbox_vc.o
-	ld -nostdlib -nostartfiles boot.o ioc.o mailbox_vc.o framebuffer.o kernelc.o -T link.ld -o kernel8.elf
+timing.o: timing.c
+	gcc $(ASFLAGS) -c timing.c -o timing.o
+
+kernel8.img: kernelc.o ioc.o boot.o framebuffer.o mailbox_vc.o timing.o
+	ld -nostdlib -nostartfiles boot.o ioc.o mailbox_vc.o framebuffer.o timing.o kernelc.o -T link.ld -o kernel8.elf
 	objcopy -O binary kernel8.elf kernel8.img
 
 clean:
