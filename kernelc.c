@@ -15,12 +15,12 @@ void main()
 
     drawPixel(700, 700, 0x09);
 
-    drawChar('P', 700, 700, 0x03);
-    drawString(800, 800, "Look I am text!", 0x0E);
+    drawChar('P', 700, 700, 0x03, 1);
+    drawString(800, 800, "Look I am text!", 0x0E, 1);
 
     unsigned long count = cntpct_el0();
-    char countString[4] = {count & 0xFF000000, count & 0x00FF0000, count & 0x0000FF00, count & 0x000000FF };
-    drawString(1000, 1000, &countString[0], 0x0F);
+    char countString[4] = {((char)count & 0xFF000000), ((char)count & 0x00FF0000), ((char)count & 0x0000FF00), ((char)count & 0x000000FF) };
+    drawString(1000, 1000, &countString[0], 0x0F, 1);
 
     while (1);
 }
