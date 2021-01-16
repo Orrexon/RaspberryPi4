@@ -13,10 +13,12 @@ void main()
     drawRect(25, 25, 400, 300, 0x07, 0);
     drawRect(100, 100, 50, 75, 0x37, 1);
 
+    wait_millisec(5000);
     drawCircle(550, 480, 300, 0x0A, 0);
     drawCircle(55, 48, 30, 0xA2, 1);
 
-    drawPixel(700, 700, 0x09);
+    wait_millisec(5000);
+    drawPixel(750, 750, 0x09);
 
     drawChar('P', 700, 700, 0x03, 1);
     drawString(800, 800, "Look I am text!", 0x0E, 1);
