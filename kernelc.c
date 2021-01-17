@@ -2,6 +2,33 @@
 #include "framebuffer.h"
 #include "timing.h"
 
+
+//move this baby somewhere
+char* parse_ulong(int num)
+{
+    static char result[32] = {0};
+    char *ptr1 = &result[0], tmp_char;
+    int tmp_value;
+    int base = 10;
+
+    int index = 0;
+    do {
+        tmp_value = num;
+        num /= base;
+        result[index++] = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - num * base)];
+    } while ( num );
+
+    // Apply negative sign
+    if (tmp_value < 0) result[index++] = '-';
+    result[index--] = '\0';
+    while(ptr1 < &result[index]) {
+        tmp_char = result[index];
+        result[index--]= *ptr1;
+        *ptr1++ = tmp_char;
+    }
+    return &result[0];
+}
+
 void main()
 {
     uart_init_c();
@@ -24,11 +51,8 @@ void main()
     drawString(800, 800, "Look I am text!", 0x0E, 1);
 
     unsigned long delta =  millisec_count_delta(countFirst);
-    char deltaString[4] = {((char)(delta << 24) & 0xFF000000), 
-	    		   ((char)(delta << 16) & 0x00FF0000), 
-	    		   ((char)(delta << 8 ) & 0x0000FF00), 
-	    		   ((char)delta & 0x000000FF) };
-    drawString(1000, 1000, &deltaString[0], 0x0F, 1);
+    char* deltaString = parse_ulong(delta);
+    drawString(1000, 1000, deltaString, 0x0F, 1);
 
     while (1);
 }
