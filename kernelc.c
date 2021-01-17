@@ -46,8 +46,8 @@ void main()
     	unsigned long countFirst = millisec_count();
     	wait_millisec(5000);
 
-    	drawRect(25, 25, 400, 300, 0x07, 0);
-    	drawRect(100, 100, 50, 75, 0x37, 1);
+    	drawRect(25, 25, 400, 300, 0x0A, 0);
+    	drawRect(100, 100, 50, 75, 0x5A, 1);
 
     	wait_millisec(5000);
     	drawCircle(550, 480, 300, 0x0A, 0);
@@ -59,9 +59,9 @@ void main()
     	drawString(800, 1000, "Look I am text!", 0x0E, 2);
 
     	
-	drawRect(900, 25, 200, 875, 0x07, 0);
+	drawRect(900, 25, 200, 875, 0x0A, 0);
     	drawString(910, 30, "Parsing ints to strings", 0x0F, 1);
-	drawRect(900, 900, 200, 300, 0x07, 0);
+	drawRect(900, 900, 200, 300, 0x0A, 0);
     	drawString(910, 905, "deltatimes in milliseconds", 0x0F, 1);
     	
 	unsigned long delta =  millisec_count_delta(countFirst);
