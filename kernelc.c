@@ -46,8 +46,8 @@ void main()
     	unsigned long countFirst = millisec_count();
     	wait_millisec(5000);
 
-    	drawRect(25, 25, 400, 300, 0x0A, 0);
-    	drawRect(100, 100, 50, 75, 0x5A, 1);
+    	drawRect(55, 48, 400, 300, 0x08, 0);
+    	drawRect(100, 100, 50, 75, 0x52, 1);
 
     	wait_millisec(5000);
     	drawCircle(550, 480, 300, 0x0A, 0);
@@ -55,6 +55,7 @@ void main()
 
     	wait_millisec(5000);
 
+	drawLine(200, 300, 700, 800, 0x06);
     	drawString(800, 800, "Look I am text!", 0x0E, 1);
     	drawString(800, 1000, "Look I am text!", 0x0E, 2);
 
