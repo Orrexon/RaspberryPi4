@@ -94,7 +94,8 @@ void drawLine(int x1, int y1, int x2, int y2, unsigned char attr)
     	dy = y2-y1;
     	x = x1;
     	y = y1;
-    	p = 2*dy-dx;
+    	//p = 2*dy-dx;
+    	p = (dy << 1)-dx;
 
     	while (x<x2) 
 	{
@@ -102,11 +103,11 @@ void drawLine(int x1, int y1, int x2, int y2, unsigned char attr)
 		{
           		drawPixel(x,y,attr);
           		y++;
-          		p = p+2*dy-2*dx;
+          		p = p+(dy << 1)-(dx << 1);
        		} else 
 		{
           		drawPixel(x,y,attr);
-          		p = p+2*dy;
+          		p = p+(dy << 1);
        		}
        		x++;
     	}
@@ -139,13 +140,15 @@ void drawCircle(int x0, int y0, int radius, unsigned char attr, int fill)
 		if (err <= 0) 
 		{
 	    		y += 1;
-	    		err += 2*y + 1;
+	    		//err += 2*y + 1;
+			err += (y << 1) + 1;
 		}
 
 		if (err > 0) 
 		{
 	    		x -= 1;
-	    		err -= 2*x + 1;
+	    		//err -= 2*x + 1;
+			err += (y << 1) + 1;
 		}
     	}
 }
