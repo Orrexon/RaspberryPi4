@@ -14,7 +14,7 @@ char* parse_ulong(int num, int base_)
 	{
 		base_ = 16;
 	}
-    	static char result[32] = {0};
+    	static char result[32] = {0}; //this will be static (local persist) until I have "malloc". unless I keep it like this
     	char *ptr1 = &result[0], tmp_char;
     	int tmp_value;
     	int base = base_;
@@ -50,7 +50,7 @@ void main()
     	drawRect(100, 100, 50, 75, 0x52, 1);
 
     	wait_millisec(5000);
-    	drawCircle(550, 480, 300, 0x0A, 0);
+    	drawCircle(550, 480, 300, 0x0A, 1);
     	drawCircle(55, 48, 30, 0xA2, 0);
 
     	wait_millisec(5000);

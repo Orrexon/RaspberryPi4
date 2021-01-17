@@ -65,80 +65,89 @@ void fb_init()
 
 void drawPixel(int x, int y, unsigned char attr)
 {
-    int offs = (y * pitch) + (x * 4);
-    *((unsigned int*)(framebuffer + offs)) = vgapal[attr & 0x0f];
+    	int offs = (y * pitch) + (x * 4);
+    	*((unsigned int*)(framebuffer + offs)) = vgapal[attr & 0x0f];
 }
 
-void drawRect(int x1, int y1, int x2, int y2, unsigned char attr, int fill)
+void drawRect(int x1, int y1, int width, int height, unsigned char attr, int fill)
 {
-    int y=y1;
+    	int y=y1;
 
-    while (y <= y2) {
-       int x=x1;
-       while (x <= x2) {
-	  if ((x == x1 || x == x2) || (y == y1 || y == y2)) drawPixel(x, y, attr);
-	  else if (fill) drawPixel(x, y, (attr & 0xf0) >> 4);
-          x++;
-       }
-       y++;
-    }
+    	while (y <= y1 + height) 
+	{
+      		int x=x1;
+       		while (x <= x1 + width) 
+		{
+	  		if ((x == x1 || x == x1 + width) || (y == y1 || y == y1 + height)) drawPixel(x, y, attr);
+	  		else if (fill) drawPixel(x, y, (attr & 0xf0) >> 4);
+          		x++;
+       		}
+       		y++;
+    	}
 }
 
 void drawLine(int x1, int y1, int x2, int y2, unsigned char attr)
 {
-    int dx, dy, p, x, y;
+    	int dx, dy, p, x, y;
 
-    dx = x2-x1;
-    dy = y2-y1;
-    x = x1;
-    y = y1;
-    p = 2*dy-dx;
+    	dx = x2-x1;
+    	dy = y2-y1;
+    	x = x1;
+    	y = y1;
+    	p = 2*dy-dx;
 
-    while (x<x2) {
-       if (p >= 0) {
-          drawPixel(x,y,attr);
-          y++;
-          p = p+2*dy-2*dx;
-       } else {
-          drawPixel(x,y,attr);
-          p = p+2*dy;
-       }
-       x++;
-    }
+    	while (x<x2) 
+	{
+       		if (p >= 0) 
+		{
+          		drawPixel(x,y,attr);
+          		y++;
+          		p = p+2*dy-2*dx;
+       		} else 
+		{
+          		drawPixel(x,y,attr);
+          		p = p+2*dy;
+       		}
+       		x++;
+    	}
 }
 
 void drawCircle(int x0, int y0, int radius, unsigned char attr, int fill)
 {
-    int x = radius;
-    int y = 0;
-    int err = 0;
+    	int x = radius;
+    	int y = 0;
+    	int err = 0;
 
-    while (x >= y) {
-	if (fill) {
-	   drawLine(x0 - y, y0 + x, x0 + y, y0 + x, (attr & 0xf0) >> 4);
-	   drawLine(x0 - x, y0 + y, x0 + x, y0 + y, (attr & 0xf0) >> 4);
-	   drawLine(x0 - x, y0 - y, x0 + x, y0 - y, (attr & 0xf0) >> 4);
-	   drawLine(x0 - y, y0 - x, x0 + y, y0 - x, (attr & 0xf0) >> 4);
-	}
-	drawPixel(x0 - y, y0 + x, attr);
-	drawPixel(x0 + y, y0 + x, attr);
-	drawPixel(x0 - x, y0 + y, attr);
-        drawPixel(x0 + x, y0 + y, attr);
-	drawPixel(x0 - x, y0 - y, attr);
-	drawPixel(x0 + x, y0 - y, attr);
-	drawPixel(x0 - y, y0 - x, attr);
-	drawPixel(x0 + y, y0 - x, attr);
+    	while (x >= y) 
+	{
+		if (fill) 
+		{
+	   		drawLine(x0 - y, y0 + x, x0 + y, y0 + x, (attr & 0xf0) >> 4);
+	   		drawLine(x0 - x, y0 + y, x0 + x, y0 + y, (attr & 0xf0) >> 4);
+	   		drawLine(x0 - x, y0 - y, x0 + x, y0 - y, (attr & 0xf0) >> 4);
+	   		drawLine(x0 - y, y0 - x, x0 + y, y0 - x, (attr & 0xf0) >> 4);
+		}
+		drawPixel(x0 - y, y0 + x, attr);
+		drawPixel(x0 + y, y0 + x, attr);
+		drawPixel(x0 - x, y0 + y, attr);
+        	drawPixel(x0 + x, y0 + y, attr);
+		drawPixel(x0 - x, y0 - y, attr);
+		drawPixel(x0 + x, y0 - y, attr);
+		drawPixel(x0 - y, y0 - x, attr);
+		drawPixel(x0 + y, y0 - x, attr);
 
-	if (err <= 0) {
-	    y += 1;
-	    err += 2*y + 1;
-	}
+		if (err <= 0) 
+		{
+	    		y += 1;
+	    		err += 2*y + 1;
+		}
 
-	if (err > 0) {
-	    x -= 1;
-	    err -= 2*x + 1;
-	}
-    }
+		if (err > 0) 
+		{
+	    		x -= 1;
+	    		err -= 2*x + 1;
+		}
+    	}
 }
 
 void drawChar(unsigned char ch, int x, int y, unsigned char attr, unsigned int zoom)
