@@ -63,6 +63,14 @@ void fb_init()
 	}
 }
 
+void clear(unsigned char color)
+{
+	for(unsigned int i = 0; i < pitch*height + width*4; ++i)
+	{
+		*((unsigned int*)(framebuffer + i)) = vgapal[color & 0x0f];
+	}
+}
+
 void drawPixel(int x, int y, unsigned char attr)
 {
     	int offs = (y * pitch) + (x * 4);
