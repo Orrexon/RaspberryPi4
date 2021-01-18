@@ -148,7 +148,7 @@ void drawCircle(int x0, int y0, int radius, unsigned char attr, int fill)
 		{
 	    		x -= 1;
 	    		//err -= 2*x + 1;
-			err += (y << 1) + 1;
+			err += (x << 1) + 1;
 		}
     	}
 }
