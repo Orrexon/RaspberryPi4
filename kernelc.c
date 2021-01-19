@@ -54,6 +54,7 @@ void main()
     	fb_init();
     	timing_init();
     	unsigned long countFirst = millisec_count();
+	//uart_loadOutputFifo(); this should not be needed in this case.... 
 
 	//"start screen"
 	
