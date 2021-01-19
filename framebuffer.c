@@ -65,9 +65,13 @@ void fb_init()
 
 void clear(unsigned char color)
 {
-	for(unsigned int i = 0; i < pitch*height + width*4; ++i)
+	for(unsigned int y = 0; y < pitch*height; ++y)
 	{
-		*((unsigned int*)(framebuffer + i)) = vgapal[color & 0x0f];
+		for(unsigned int x = 0; x < width*4; ++x)
+		{
+			int pix = (y * pitch) + (x * 4);
+			*((unsigned int*)(framebuffer + pix)) = vgapal[color & 0x0f];
+		}
 	}
 }
 
