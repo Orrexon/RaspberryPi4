@@ -60,7 +60,7 @@ void main()
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
     	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 10);
-	while(!getKey());
+	//while(!getKey());
 	uart_loadOutputFifo(); 
 
     	for(unsigned int i = 0; i < 5000; ++i)
