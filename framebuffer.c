@@ -161,13 +161,13 @@ void drawCircle(int x0, int y0, int radius, unsigned char attr, int fill)
     	}
 }
 
-void drawChar(unsigned char ch, int x, int y, unsigned char color, unsigned int zoom)
+void drawChar(unsigned char ch, int x, int y, unsigned char color, int zoom)
 {
 	unsigned char* glyph = (unsigned char* )&font + (ch < FONT_NUMGLYPHS ? ch : 0) * FONT_BPG;
 
-	for (unsigned int i = 1; i < (FONT_HEIGHT*zoom); i++)
+	for (int i = 1; i <= (FONT_HEIGHT*zoom); i++)
 	{
-		for (unsigned int j = 0; j < (FONT_WIDTH*zoom); j++)
+		for (int j = 0; j < (FONT_WIDTH*zoom); j++)
 		{
 			unsigned char mask = 1 << (j/zoom);
 			unsigned char col = (*glyph & mask) ? color & 0x0F : ((color & 0xF0) >> 4);

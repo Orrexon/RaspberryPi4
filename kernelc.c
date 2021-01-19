@@ -54,13 +54,14 @@ void main()
     	fb_init();
     	timing_init();
     	unsigned long countFirst = millisec_count();
-	//uart_loadOutputFifo(); this should not be needed in this case.... 
+	uart_loadOutputFifo(); 
 
 	//"start screen"
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
     	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 10);
 	while(!getKey());
+	uart_loadOutputFifo(); 
 
     	for(unsigned int i = 0; i < 5000; ++i)
 	{
