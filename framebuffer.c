@@ -189,12 +189,12 @@ void drawString(int x, int y, char* string, unsigned char color, unsigned int zo
 		else if(*string == '\n')
 		{
 			x = 0;
-			y += FONT_HEIGHT;
+			y += (FONT_HEIGHT*zoom);
 		}
 		else
 		{
 			drawChar(*string, x, y, color, zoom);
-			x += FONT_WIDTH;
+			x += (FONT_WIDTH*zoom);
 		}
 		string++;
 	}

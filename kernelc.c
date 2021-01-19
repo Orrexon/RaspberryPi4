@@ -50,18 +50,20 @@ unsigned char getKey()
 
 void main()
 {
+	//initializations
     	uart_init_c();
     	fb_init();
     	timing_init();
     	unsigned long countFirst = millisec_count();
-	uart_loadOutputFifo(); 
+	//testing the uart again like before
+	uart_write_text_c("This should be visible in my debug terminal!\r\n"); 
 
 	//"start screen"
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
-    	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 10);
+    	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 5);
 	//while(!getKey());
-	uart_loadOutputFifo(); 
+	//uart_loadOutputFifo(); 
 
     	for(unsigned int i = 0; i < 5000; ++i)
 	{
@@ -105,6 +107,10 @@ void main()
 	}
 
 	clear(0xFF);
-    	drawString(500, 500, "This is ENDSCREEN!", 0x0A, 10);
-    	while (1);
+    	drawString(500, 500, "This is ENDSCREEN!", 0x0A, 5);
+    	while (1)
+	{
+		//this little thing should show the characters I press in the debug terminal
+		uart_update();
+	}
 }
