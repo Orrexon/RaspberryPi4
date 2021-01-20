@@ -2,7 +2,7 @@
 #include "mailbox_vc.h"
 #include "terminal.h"
 
-unsigned int width, height, pitch, isrgb;
+unsigned int width, height, pitch, isrgb, bufferSize;
 unsigned char* framebuffer;
 
 void fb_init()
@@ -60,14 +60,15 @@ void fb_init()
 		pitch = mbox[33]; 	//Number of bytes per line
 		isrgb = mbox[24];	//pixel order
 		framebuffer = (unsigned char*)((long)mbox[28]);
+		bufferSize = mbox[29];	//total size of framebuffer?? bytes??
 	}
 }
 
 void clear(unsigned char color)
 {
-	for(unsigned int y = 0; y < pitch*height; ++y)
+	for(unsigned int y = 0; y < height; ++y)
 	{
-		for(unsigned int x = 0; x < width*4; ++x)
+		for(unsigned int x = 0; x < width; ++x)
 		{
 			int pix = (y * pitch) + (x * 4);
 			*((unsigned int*)(framebuffer + pix)) = vgapal[color & 0x0f];

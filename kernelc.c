@@ -62,12 +62,16 @@ void main()
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
     	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 5);
+	//uart_write_text_c("waiting for key press\r\n"); 
 	//while(!getKey());
-	//uart_loadOutputFifo(); 
+	////uart_write_text_c("key pressed, start loop\r\n");
+	//uart_loadOutputFifo();
 
     	for(unsigned int i = 0; i < 5000; ++i)
 	{
+		if(i==0)uart_write_text_c("Cearing screen\r\n"); 
 		clear(0x00);
+		if(i==0)uart_write_text_c("Drawing the shapes and texts\r\n"); 
 		drawRect(55, 48, 400, 300, 0x08, 0);
     		drawRect(100, 100, 50, 75, 0x52, 1);
 
