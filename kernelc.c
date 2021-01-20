@@ -62,10 +62,10 @@ void main()
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
     	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 5);
-	//uart_write_text_c("waiting for key press\r\n"); 
-	//while(!getKey());
-	////uart_write_text_c("key pressed, start loop\r\n");
-	//uart_loadOutputFifo();
+	uart_write_text_c("waiting for key press\r\n"); 
+	while(!getKey());
+	uart_write_text_c("key pressed, start loop\r\n");
+	
 
     	for(unsigned int i = 0; i < 10; ++i)
 	{
@@ -80,10 +80,13 @@ void main()
 
 
 		drawLine(200, 300, 700, 800, 0x06);
-    		drawString(800, 800, "Look I am text!", 0x0E, 1);
-	    	drawString(800, 1000, "Look I am text!", 0x0E, 2);
+    		char ch = 0;
+    		if( (ch = getKey()) )
+		{
+			drawString(500, 300, &ch, 0x0E, 16);
+			uart_loadOutputFifo();
+		}
 
-    	
 		drawRect(900, 25, 300, 800, 0x0A, 0);
 	    	drawString(910, 30, "Parsing ints to strings", 0x0F, 1);
 		drawRect(900, 900, 300, 180, 0x0A, 0);
