@@ -67,7 +67,7 @@ void main()
 	////uart_write_text_c("key pressed, start loop\r\n");
 	//uart_loadOutputFifo();
 
-    	for(unsigned int i = 0; i < 5000; ++i)
+    	for(unsigned int i = 0; i < 10; ++i)
 	{
 		if(i==0)uart_write_text_c("Cearing screen\r\n"); 
 		clear(0x00);
