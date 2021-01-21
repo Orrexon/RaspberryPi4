@@ -19,13 +19,13 @@ unsigned long millisec_count()
 {
 	register unsigned long count;
 	asm volatile ("mrs %0, cntpct_el0" : "=r"(count));
-	return count / (freq/1000);
+	return count / 1000 / (freq/1000);
 }
 unsigned long millisec_count_delta(unsigned long oldCount)
 {
 	register unsigned long count;
 	asm volatile ("mrs %0, cntpct_el0" : "=r"(count));
-	return (count - oldCount) / (freq/1000);
+	return (count - oldCount) / 1000 / (freq/1000);
 }
 
 void timing_init()
