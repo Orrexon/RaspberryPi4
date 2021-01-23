@@ -111,6 +111,10 @@ void main()
 		unsigned long delta2 =  millisec_count_delta(delta);
 	    	char* deltaString2 = parse_ulong(delta2, 10);
     		drawString(1000, 1050, deltaString2, 0x0F, 1);
+
+		unsigned long delta3 = delta - delta2;
+	    	char* deltaString3 = parse_ulong(delta3, 10);
+    		drawString(1000, 1050, deltaString3, 0x0F, 1);
 	}
 
 	clear(0xFF);
