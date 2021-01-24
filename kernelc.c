@@ -72,7 +72,8 @@ void main()
 	{
 		unsigned long clearStart = millisec_count();
 		clear(0x00);		
-		unsigned long deltaClear = millisec_count_delta(clearStart);
+		unsigned long clearEnd = millisec_count();
+		unsigned long deltaClear = clearEnd - clearStart;
 	    	char* deltaClearString = parse_ulong(deltaClear, 10);
     		drawString(1000, 1000, deltaClearString, 0x0F, 1);
 
