@@ -66,59 +66,44 @@ void main()
 	while(!getKey());
 	uart_write_text_c("key pressed, start loop\r\n");
 	
-
-    	for(unsigned int i = 0; i < 10; ++i)
+	unsigned long deltaFrame = 0;
+	int run = 1;
+    	while(run)
 	{
-		if(i==0)uart_write_text_c("Cearing screen\r\n"); 
-		clear(0x00);
-		if(i==0)uart_write_text_c("Drawing the shapes and texts\r\n"); 
+		unsigned long clearStart = millisec_count();
+		clear(0x00);		
+		unsigned long deltaClear = millisec_count_delta(clearStart);
+	    	char* deltaClearString = parse_ulong(deltaClear, 10);
+    		drawString(1000, 1000, deltaClearString, 0x0F, 1);
+
 		drawRect(55, 48, 400, 300, 0x08, 0);
     		drawRect(100, 100, 50, 75, 0x52, 1);
 
 	    	drawCircle(550, 480, 300, 0x0A,0);
     		drawCircle(55, 48, 30, 0xA2, 0);
 
-
 		drawLine(200, 300, 700, 800, 0x06);
+
+		drawRect(900, 900, 300, 180, 0x0A, 0);
+	    	drawString(910, 905, "deltatimes in milliseconds, clear and frame", 0x0F, 2);
+    	
     		char ch = 0;
     		if( (ch = getKey()) )
 		{
-			drawString(500, 300, &ch, 0x0E, 16);
+			if(ch == 's') run = 0; //endloop
 			uart_loadOutputFifo();
+			uart_write_text_c("key pressed 's', end loop\r\n");
 		}
 
-		drawRect(900, 25, 300, 800, 0x0A, 0);
-	    	drawString(910, 30, "Parsing ints to strings", 0x0F, 1);
-		drawRect(900, 900, 300, 180, 0x0A, 0);
-	    	drawString(910, 905, "deltatimes in milliseconds", 0x0F, 1);
-    	
-		unsigned long delta =  millisec_count_delta(countFirst);
-    		char* deltaString = parse_ulong(delta, 10);
-	    	drawString(1000, 1000, deltaString, 0x0F, 1);
-    	
-		char* one = parse_ulong(12345, 10);
-	    	drawString(1000, 100, one, 0x0F, 1);
-    	
-		char* two = parse_ulong(78355, 10);
-	    	drawString(1000, 200, two, 0x0F, 1);
-    	
-		char* three = parse_ulong(5500, 10);
-	    	drawString(1000, 300, three, 0x0F, 1);
-    	
-		char* four = parse_ulong(1234567890, 10);
-	    	drawString(1000, 400, four, 0x0F, 1);
-    	
-		unsigned long delta2 =  millisec_count_delta(delta);
-	    	char* deltaString2 = parse_ulong(delta2, 10);
-    		drawString(1000, 1050, deltaString2, 0x0F, 1);
-
-		unsigned long delta3 = delta - delta2;
-	    	char* deltaString3 = parse_ulong(delta3, 10);
-    		drawString(1000, 1050, deltaString3, 0x0F, 1);
+		deltaFrame =  millisec_count_delta(deltaFrame);
+	    	char* deltaFrameString = parse_ulong(deltaFrame, 10);
+    		drawString(1000, 1050, deltaFrameString, 0x0F, 1);
 	}
 
 	clear(0xFF);
     	drawString(500, 500, "This is ENDSCREEN!", 0x0A, 5);
+	char* totalCountString = parse_ulong(countFirst, 10);
+    	drawString(1000, 1050, totalCountString, 0x0F, 1);
     	while (1)
 	{
 		//this little thing should show the characters I press in the debug terminal
