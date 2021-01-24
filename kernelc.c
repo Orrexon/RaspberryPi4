@@ -103,7 +103,7 @@ void main()
 	clear(0xFF);
     	drawString(500, 500, "This is ENDSCREEN!", 0x0A, 5);
 	char* totalCountString = parse_ulong(countFirst, 10);
-    	drawString(1000, 1050, totalCountString, 0x0F, 1);
+    	drawString(500, 650, totalCountString, 0x0F, 1);
     	while (1)
 	{
 		//this little thing should show the characters I press in the debug terminal
