@@ -189,7 +189,7 @@ void drawString(int x, int y, char* string, unsigned char color, unsigned int zo
 	{
 		if(*string == '\r')
 		{
-			x = 0; //I don't quite understand the '\r' checks it doesnt do anything
+			x = 0; //I don't quite understand the '\r' checks it doesnt seem to do anything
 		}
 		else if(*string == '\n')
 		{

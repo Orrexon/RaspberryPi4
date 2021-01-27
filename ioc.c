@@ -152,7 +152,7 @@ unsigned int uart_isOutputQueueEmpty()
 	return uart_output_queue_read == uart_output_queue_write;
 }
 
-//sometime this or calling code needs some cleaning up, these are checked all the time 
+//sometime this or calling code needs some attention, these are checked all the time. perhaps it is good because of the different cores can check them at any time? 
 unsigned int uart_isReadByteReady() 
 { 
 	return mmio_read(AUX_MU_LSR_REG) & 0x01; 
@@ -214,7 +214,7 @@ void uart_update()
 	if(uart_isReadByteReady())
 	{
 		unsigned char ch = uart_readByte();
-		if(ch == '\r') uart_write_text_c("\n"); //can I just loose this annoying branch?
+		if(ch == '\r') uart_write_text_c("\n"); //can I just loose this branch?
 		else uart_writeByteBlocking(ch);
 
 	}

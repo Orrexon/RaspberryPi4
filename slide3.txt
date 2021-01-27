@@ -1,0 +1,8 @@
+
+**********************************************************************
+WHY????
+**********************************************************************
+
+*********WANT TO LEARN HOW COMPUTERS REALLY WORK
+***********THERE IS NOT TOO MUCH DOKUMENTATION ON BARE METAL RPI4
+***********WANT TO CONTRIBUTE TO BARE METAL PEEPS OUT THERE

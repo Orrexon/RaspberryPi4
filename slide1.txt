@@ -1,0 +1,29 @@
+**********************************************************************
+WHAT??
+**********************************************************************
+
+*********CUSTOM OS TO RUN GAME
+
+*************DOCUMENTATION
+
+*************POSSIBLY SLIGHTLY EDUCATIONAL
+
+*************THERE IS GITHUB. ASK
+
+
+*********************************************************************
+SETUP!!!
+
+2 RPI 4
+ONE DEV OTHER TEST
+
+DEV:
+	RASPBERRY PI BUSTER 64 BIT OS
+	NATIVE BUILD TOOLS GCC, AS, LD TO COMPLIE KERNEL8.IMG
+TEST:
+	RASPBERRY PI BUSTER 64 BIT OS WITHOUT KERNEL*.IMG FILES
+	BOOTING WITH DEV-PI'S KERNEL8.IMG
+
+USB TO SERIAL TTL DEBUG CONSOLE
+SD CARD READER
+
