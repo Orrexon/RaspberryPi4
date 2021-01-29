@@ -52,13 +52,13 @@ unsigned char getKey()
 void ConCat(char* first, char* second)
 {
 	int countFirst = 0;
-	while(*first != '\0')
+	while(*(first + countFirst) != '\0')
 	{
 		++countFirst;
 	}
 
 	int countSecond = 0;
-	while(*second != '\0')
+	while(*(second + countSecond) != '\0')
 	{
 		*(first + countFirst) = *(second + countSecond);
 		++countFirst;
