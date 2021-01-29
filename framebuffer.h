@@ -1,5 +1,5 @@
-void fb_init();
-void clear(unsigned char);
+void FrameBufferInit();
+void Clear(unsigned char);
 void drawPixel(int x, int y, unsigned char attr);
 void drawChar(unsigned char ch, int x, int y, unsigned char attr, unsigned int zoom);
 void drawString(int x, int y, char *s, unsigned char attr, unsigned int zoom);

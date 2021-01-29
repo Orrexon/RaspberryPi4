@@ -24,11 +24,15 @@ enum
     Pull_Up   = 2
 };
 
-void mmio_write(long reg, unsigned int val) 
-{ *(volatile unsigned int *)reg = val; }
+void WriteMMIO(long reg, unsigned int val) 
+{ 
+	*(volatile unsigned int *)reg = val; 
+}
 
-unsigned int mmio_read(long reg) 
-{ return *(volatile unsigned int *)reg; }
+unsigned int ReadMMIO(long reg) 
+{
+       	return *(volatile unsigned int *)reg; 
+}
 
 unsigned int gpio_call(	unsigned int pin_number, 
 			unsigned int value, 
@@ -45,10 +49,10 @@ unsigned int gpio_call(	unsigned int pin_number,
     unsigned int reg = base + ((pin_number / num_fields) * 4);
     unsigned int shift = (pin_number % num_fields) * field_size;
 
-    unsigned int curval = mmio_read(reg);
+    unsigned int curval = ReadMMIO(reg);
     curval &= ~(field_mask << shift);
     curval |= value << shift;
-    mmio_write(reg, curval);
+    WriteMMIO(reg, curval);
 
     return 1;
 }
@@ -135,16 +139,16 @@ unsigned int  uart_output_queue_read = 0;
 
 void uart_init_c() 
 {
-    mmio_write(AUX_ENABLES, 1); //enable UART1
-    mmio_write(AUX_MU_CNTL_REG, 0);
-    mmio_write(AUX_MU_LCR_REG, 3); //8 bits
-    mmio_write(AUX_MU_MCR_REG, 0);
-    mmio_write(AUX_MU_IER_REG, 0);
-    mmio_write(AUX_MU_IIR_REG, 0xC6); //disable interrupts
-    mmio_write(AUX_MU_BAUD_REG, AUX_MU_BAUD(115200));
+    WriteMMIO(AUX_ENABLES, 1); //enable UART1
+    WriteMMIO(AUX_MU_CNTL_REG, 0);
+    WriteMMIO(AUX_MU_LCR_REG, 3); //8 bits
+    WriteMMIO(AUX_MU_MCR_REG, 0);
+    WriteMMIO(AUX_MU_IER_REG, 0);
+    WriteMMIO(AUX_MU_IIR_REG, 0xC6); //disable interrupts
+    WriteMMIO(AUX_MU_BAUD_REG, AUX_MU_BAUD(115200));
     gpio_useAsAlt5(14);
     gpio_useAsAlt5(15);
-    mmio_write(AUX_MU_CNTL_REG, 3); //enable RX/TX
+    WriteMMIO(AUX_MU_CNTL_REG, 3); //enable RX/TX
 }
 
 unsigned int uart_isOutputQueueEmpty()
@@ -155,25 +159,25 @@ unsigned int uart_isOutputQueueEmpty()
 //sometime this or calling code needs some attention, these are checked all the time. perhaps it is good because of the different cores can check them at any time? 
 unsigned int uart_isReadByteReady() 
 { 
-	return mmio_read(AUX_MU_LSR_REG) & 0x01; 
+	return ReadMMIO(AUX_MU_LSR_REG) & 0x01; 
 }
 
 //how many times per char does this need to be checked?
 unsigned int uart_isWriteByteReady() 
 { 
-	return mmio_read(AUX_MU_LSR_REG) & 0x20; 
+	return ReadMMIO(AUX_MU_LSR_REG) & 0x20; 
 }
 
 unsigned char uart_readByte()
 {
 	while(!uart_isReadByteReady());
-	return (unsigned char)mmio_read(AUX_MU_IO_REG);
+	return (unsigned char)ReadMMIO(AUX_MU_IO_REG);
 }
 
 void uart_writeByteBlockingActual(unsigned char ch) 
 {
     while (!uart_isWriteByteReady()); 
-    mmio_write(AUX_MU_IO_REG, (unsigned int)ch);
+    WriteMMIO(AUX_MU_IO_REG, (unsigned int)ch);
 }
 
 void uart_loadOutputFifo()

@@ -5,7 +5,7 @@
 unsigned int width, height, pitch, isrgb, bufferSize;
 unsigned char* framebuffer;
 
-void fb_init()
+void FrameBufferInit()
 {
 	mbox[0] = 35 * 4;//length of message in bytes
 	mbox[1] = MBOX_REQUEST;
@@ -52,7 +52,7 @@ void fb_init()
 	mbox[34] = MBOX_TAG_LAST;
 
 	//check call is successufl and we have a pointer with depth 32
-	if(mbox_call(MBOX_CH_PROP) && mbox[20] == 32 && mbox[28] != 0)
+	if(MboxVcCall(MBOX_CH_PROP) && mbox[20] == 32 && mbox[28] != 0)
 	{
 		mbox[28] &= 0x3FFFFFFF; //convert GPU address to ARM address
 		width = mbox[10];	//Actual physical width (?? not virtual??)
@@ -64,7 +64,7 @@ void fb_init()
 	}
 }
 
-void clear(unsigned char color)
+void Clear(unsigned char color)
 {
 	for(unsigned int y = 0; y < height; ++y)
 	{

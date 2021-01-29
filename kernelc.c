@@ -48,11 +48,32 @@ unsigned char getKey()
 	return Result;
 }
 
+
+void ConCat(char* first, char* second)
+{
+	int countFirst = 0;
+	while(*first != '\0')
+	{
+		++countFirst;
+	}
+
+	int countSecond = 0;
+	while(*second != '\0')
+	{
+		*(first + countFirst) = *(second + countSecond);
+		++countFirst;
+		++countSecond;	
+	}
+
+	*(first + countFirst) = '\0';
+}
+
+
 void main()
 {
 	//initializations
     	uart_init_c();
-    	fb_init();
+    	FrameBufferInit();
     	timing_init();
     	unsigned long countFirst = millisec_count();
 	//testing the uart again like before
@@ -71,11 +92,16 @@ void main()
     	while(run)
 	{
 		unsigned long clearStart = millisec_count();
-		clear(0x00);		
+		Clear(0x00);		
 		unsigned long clearEnd = millisec_count();
 		unsigned long deltaClear = clearEnd - clearStart;
 	    	char* deltaClearString = parse_ulong(deltaClear, 10);
     		drawString(1000, 1000, deltaClearString, 0x0F, 1);
+		
+		unsigned long deltaFromFunc = millisec_count_delta(clearStart);
+		char* deltaFromFuncString = parse_ulong(deltaFromFunc, 10);
+		ConCat( deltaFromFuncString, "\n"); 
+		uart_write_text_c(deltaFromFuncString);
 
 		drawRect(55, 48, 400, 300, 0x08, 0);
     		drawRect(100, 100, 50, 75, 0x52, 1);
@@ -101,7 +127,7 @@ void main()
     		drawString(1000, 1050, deltaFrameString, 0x0F, 1);
 	}
 
-	clear(0xFF);
+	Clear(0xFF);
     	drawString(500, 500, "This is ENDSCREEN!", 0x0A, 5);
 	char* totalCountString = parse_ulong(countFirst, 10);
     	drawString(500, 650, totalCountString, 0x0F, 1);

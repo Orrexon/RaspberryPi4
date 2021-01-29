@@ -17,24 +17,24 @@ enum
 	MBOX_EMPTY     = 0x40000000
 };
 
-unsigned int mbox_call(unsigned char ch)
+unsigned int MboxVcCall(unsigned char ch)
 {
 	//28 bit address MSB and 4 bit value LSB
 	unsigned int reg = ((unsigned int)((long) &mbox) &~ 0XF) | (ch & 0xF);
 
 	//wait until we can write
-	while (mmio_read(MBOX_STATUS) & MBOX_FULL);
+	while (ReadMMIO(MBOX_STATUS) & MBOX_FULL);
 
 	// Write the address of our buffer to the mailbox with the channel appended
-	mmio_write(MBOX_WRITE, reg);
+	WriteMMIO(MBOX_WRITE, reg);
 
 	while(1)
 	{
 		//is there a reply?? 
-		while(mmio_read(MBOX_STATUS) & MBOX_EMPTY);
+		while(ReadMMIO(MBOX_STATUS) & MBOX_EMPTY);
 
 		//is it a reply to our message? 
-		if(reg == mmio_read(MBOX_READ))
+		if(reg == ReadMMIO(MBOX_READ))
 		{
 			return mbox[1] == MBOX_RESPONSE;// Is it successful?
 		}
