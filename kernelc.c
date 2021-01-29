@@ -101,8 +101,10 @@ void main()
 		unsigned long deltaFromFunc = millisec_count_delta(clearStart);
 		char* deltaFromFuncString = parse_ulong(deltaFromFunc, 10);
 		ConCat( deltaFromFuncString, "\n"); 
+		ConCat( deltaClearString, "\n"); 
 		uart_write_text_c(deltaFromFuncString);
-
+		uart_write_text_c(deltaClearString);
+		
 		drawRect(55, 48, 400, 300, 0x08, 0);
     		drawRect(100, 100, 50, 75, 0x52, 1);
 
