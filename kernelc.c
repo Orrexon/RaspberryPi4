@@ -1,7 +1,7 @@
 #include "ioc.h"
 #include "framebuffer.h"
 #include "timing.h"
-
+#include "mmu.h"
 
 //move this baby somewhere
 char* parse_ulong(int num, int base_)
@@ -75,17 +75,18 @@ void main()
     	uart_init_c();
     	FrameBufferInit();
     	timing_init();
+	MMUInit();
     	unsigned long countFirst = millisec_count();
 	//testing the uart again like before
-	uart_write_text_c("This should be visible in my debug terminal!\r\n"); 
+	WriteTextUart("This should be visible in my debug terminal!\r\n"); 
 
 	//"start screen"
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
     	drawString(500, 500, "This is STARTSCREEN!", 0x0A, 5);
-	uart_write_text_c("waiting for key press\r\n"); 
+	WriteTextUart("waiting for key press\r\n"); 
 	while(!getKey());
-	uart_write_text_c("key pressed, start loop\r\n");
+	WriteTextUart("key pressed, start loop\r\n");
 	
 	unsigned long deltaFrame = 0;
 	int run = 1;
@@ -102,8 +103,8 @@ void main()
 		char* deltaFromFuncString = parse_ulong(deltaFromFunc, 10);
 		ConCat( deltaFromFuncString, "\n"); 
 		ConCat( deltaClearString, "\n"); 
-		uart_write_text_c(deltaFromFuncString);
-		uart_write_text_c(deltaClearString);
+		WriteTextUart(deltaFromFuncString);
+		WriteTextUart(deltaClearString);
 		
 		drawRect(55, 48, 400, 300, 0x08, 0);
     		drawRect(100, 100, 50, 75, 0x52, 1);
@@ -121,7 +122,7 @@ void main()
 		{
 			if(ch == 's') run = 0; //endloop
 			uart_loadOutputFifo();
-			uart_write_text_c("key pressed 's', end loop\r\n");
+			WriteTextUart("key pressed 's', end loop\r\n");
 		}
 
 		deltaFrame =  millisec_count_delta(deltaFrame);

@@ -199,7 +199,7 @@ void uart_writeByteBlocking(unsigned char ch)
 }
 
 
-void uart_write_text_c(char *buffer) 
+void WriteTextUart(char *buffer) 
 {
     while (*buffer) 
     {
@@ -218,7 +218,7 @@ void uart_update()
 	if(uart_isReadByteReady())
 	{
 		unsigned char ch = uart_readByte();
-		if(ch == '\r') uart_write_text_c("\n"); //can I just loose this branch?
+		if(ch == '\r') WriteTextUart("\n"); //can I just loose this branch?
 		else uart_writeByteBlocking(ch);
 
 	}
