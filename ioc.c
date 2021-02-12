@@ -203,7 +203,7 @@ void WriteTextUart(char *buffer)
 {
     while (*buffer) 
     {
-       uart_writeByteBlockingActual(*buffer++);
+       uart_writeByteBlockingActual(*buffer++);//should I call writebyteblocking instead? 
     }
 }
 

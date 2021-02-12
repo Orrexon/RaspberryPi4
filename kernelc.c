@@ -69,6 +69,9 @@ void ConCat(char* first, char* second)
 }
 
 
+#define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00000)
+#define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00018)
+
 void main()
 {
 	//initializations
@@ -79,7 +82,17 @@ void main()
     	unsigned long countFirst = millisec_count();
 	//testing the uart again like before
 	WriteTextUart("This should be visible in my debug terminal!\r\n"); 
-
+	//testing the mmu
+	char* MmuString = "Writing through MMIO mapped in higher half \n";
+	WriteTextUart("writing through identity mapped MMIO. \n");
+	while(*MmuString) 
+	{
+        	/* wait until we can send */
+        	do{asm volatile("nop");}while(*KERNEL_UART0_FR&0x20);
+        	/* write the character to the buffer */
+        	*KERNEL_UART0_DR=*MmuString++;
+	}
+	uart_loadOutputFifo();
 	//"start screen"
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);
