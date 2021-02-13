@@ -75,10 +75,14 @@ void ConCat(char* first, char* second)
 void main()
 {
 	//initializations
-    	uart_init_c();
+    	uart_init_c();	
+	WriteTextUart("uart initialized!\r\n"); 
     	FrameBufferInit();
+	WriteTextUart("framebuffer initialized!\r\n"); 
     	timing_init();
+	WriteTextUart("timing initialized!\r\n"); 
 	MMUInit();
+	WriteTextUart("MMU initialized!\r\n"); 
     	unsigned long countFirst = millisec_count();
 	//testing the uart again like before
 	WriteTextUart("This should be visible in my debug terminal!\r\n"); 
