@@ -70,7 +70,7 @@ void ConCat(char* first, char* second)
 
 
 #define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00000)
-#define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00018)
+#define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00084) //LSR_REGISTER
 
 void main()
 {
@@ -87,15 +87,15 @@ void main()
 	//testing the uart again like before
 	WriteTextUart("This should be visible in my debug terminal!\r\n"); 
 	//testing the mmu
-	char* MmuString = "Writing through MMIO mapped in higher half \n";
-	WriteTextUart("writing through identity mapped MMIO. \n");
+	char* MmuString = "Writing through MMIO mapped in higher half \r\n";
+	WriteTextUart("writing through identity mapped MMIO. \r\n");
 	while(*MmuString) 
 	{
         	/* wait until we can send */
         	do{asm volatile("nop");}while(*KERNEL_UART0_FR&0x20);
         	/* write the character to the buffer */
         	*KERNEL_UART0_DR=*MmuString++;
-	}
+	} //This function exists already. don't worry all the kernel code will change any way not sure if this is really how this works though ok let's hit it!
 	uart_loadOutputFifo();
 	//"start screen"
 	
@@ -118,8 +118,8 @@ void main()
 		
 		unsigned long deltaFromFunc = millisec_count_delta(clearStart);
 		char* deltaFromFuncString = parse_ulong(deltaFromFunc, 10);
-		ConCat( deltaFromFuncString, "\n"); 
-		ConCat( deltaClearString, "\n"); 
+		ConCat( deltaFromFuncString, "\r\n"); 
+		ConCat( deltaClearString, "\r\n"); 
 		WriteTextUart(deltaFromFuncString);
 		WriteTextUart(deltaClearString);
 		
