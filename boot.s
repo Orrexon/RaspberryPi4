@@ -19,6 +19,11 @@ TWO:
 	ldr x1, =_start
 	mov sp, x1
 
+//enable some things in the system control register
+	mov x2, #0x0800
+	movk x2, #0x30D0, lsl #16
+	msr sctlr_el1, x2
+
 	#clean the bss
 	ldr x1, =__bss_start
 	ldr x2, =__bss_size
