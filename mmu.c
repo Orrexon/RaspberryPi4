@@ -98,7 +98,7 @@ void MMUInit()
 		PT_NX |		//no execute
 		PT_KERNEL | 	//privilaged
 		PT_OSH | 	//inner sharable
-		PT_DEV; 	//normal memory
+		PT_DEV; 	//device memory
 
 	//setting system registers to enable mmu
 	//check for 4k granule and at least 36 bits of physical address bus

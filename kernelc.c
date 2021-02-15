@@ -69,8 +69,8 @@ void ConCat(char* first, char* second)
 }
 
 
-#define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00064) //IO_REGISTER
-#define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00084) //LSR_REGISTER
+#define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00040) //IO_REGISTER
+#define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
 
 void main()
 {
@@ -91,8 +91,12 @@ void main()
 	WriteTextUart("writing through identity mapped MMIO. \r\n");
 	while(*MmuString) 
 	{
-        	/* wait until we can send */
-        	do{asm volatile("nop");}while(*KERNEL_UART0_FR&0x20);
+        	WriteTextUart("wait until we can send\r\n");
+        	do
+		{
+			asm volatile("nop");	
+        		WriteTextUart("Stuck in the loop, eh? \r\n");
+		}while(*KERNEL_UART0_FR&0x20);
         	/* write the character to the buffer */
         	*KERNEL_UART0_DR=*MmuString++;
 	} //This function exists already. 
