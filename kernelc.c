@@ -69,8 +69,8 @@ void ConCat(char* first, char* second)
 }
 
 
-#define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00040) //IO_REGISTER
-#define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
+#define KERNEL_UART0_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00040) //IO_REGISTER
+#define KERNEL_UART0_LSR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
 
 void main()
 {
@@ -96,9 +96,9 @@ void main()
 		{
 			asm volatile("nop");	
         		WriteTextUart("Stuck in the loop, eh? \r\n");
-		}while(*KERNEL_UART0_FR&0x20);
-        	/* write the character to the buffer */
-        	*KERNEL_UART0_DR=*MmuString++;
+		}while(*KERNEL_UART0_LSR & 0x20);
+        	WriteTextUart("write the character to the buffer\r\n");
+        	*KERNEL_UART0_IO = *MmuString++;
 	} //This function exists already. 
 	//don't worry all the kernel code will change any way 
 	//not sure if this is really how this works though 

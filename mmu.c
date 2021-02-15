@@ -92,12 +92,12 @@ void MMUInit()
 		PT_MEM; 	//normal memory
 	
 	//kernel L3
-	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x215000) | //physical address NOTE Oscar: same as "AUX_BASE" uart base?
+	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x00215000) | //physical address NOTE Oscar: same as "AUX_BASE" uart base?
 		PT_PAGE | 	//we have area in it mapped by pages
 		PT_AF |		//accessed flag
 		PT_NX |		//no execute
 		PT_KERNEL | 	//privilaged
-		PT_OSH | 	//inner sharable
+		PT_OSH | 	//outer sharable
 		PT_DEV; 	//device memory
 
 	//setting system registers to enable mmu
@@ -134,7 +134,7 @@ void MMUInit()
 		(0b00LL << 14) |	//TG0=4k
 		(0b11LL << 12) |	//SHO=3 inner
 		(0b01LL << 10) |	//ORGN0=1 write back
-		(0b01LL << 8)  |	//ORGN0=1 write back
+		(0b01LL << 8)  |	//IRGN0=1 write back
 		(0b0LL  << 7)  |	//EPD0 enable lower half
 		(25LL   << 0);		//T0SZ=25 3 levels (512G)
 	asm volatile ("msr tcr_el1, %0; isb" : : "r" (reg));
