@@ -69,7 +69,7 @@ void ConCat(char* first, char* second)
 }
 
 
-#define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00000)
+#define KERNEL_UART0_DR ((volatile unsigned int* )0xFFFFFFFFFFE00064) //IO_REGISTER
 #define KERNEL_UART0_FR ((volatile unsigned int* )0xFFFFFFFFFFE00084) //LSR_REGISTER
 
 void main()

@@ -174,7 +174,7 @@ unsigned char uart_readByte()
 	return (unsigned char)ReadMMIO(AUX_MU_IO_REG);
 }
 
-void uart_writeByteBlockingActual(unsigned char ch) 
+void WriteByteToUART(unsigned char ch) 
 {
     while (!uart_isWriteByteReady()); 
     WriteMMIO(AUX_MU_IO_REG, (unsigned int)ch);
@@ -184,15 +184,15 @@ void uart_loadOutputFifo()
 {
 	while (!uart_isOutputQueueEmpty() && uart_isWriteByteReady())
 	{
-		uart_writeByteBlockingActual(uart_output_queue[uart_output_queue_read]);
+		WriteByteToUART(uart_output_queue[uart_output_queue_read]);
 		uart_output_queue_read = (uart_output_queue_read + 1) & (UART_MAX_QUEUE -1);
 	}
 }
 
-void uart_writeByteBlocking(unsigned char ch)
+void WriteByteQueue(unsigned char ch)
 {
 	unsigned int next = (uart_output_queue_write + 1) & (UART_MAX_QUEUE -1);
-	while(next == uart_output_queue_read)
+	while(next == uart_output_queue_read) //change to if-statement?
 		uart_loadOutputFifo();
 	uart_output_queue[uart_output_queue_write] = ch;
 	uart_output_queue_write = next;
@@ -203,7 +203,7 @@ void WriteTextUart(char *buffer)
 {
     while (*buffer) 
     {
-       uart_writeByteBlockingActual(*buffer++);//should I call writebyteblocking instead? 
+       WriteByteQueue(*buffer++); 
     }
 }
 
@@ -219,7 +219,7 @@ void uart_update()
 	{
 		unsigned char ch = uart_readByte();
 		if(ch == '\r') WriteTextUart("\n"); //can I just loose this branch?
-		else uart_writeByteBlocking(ch);
+		else WriteByteQueue(ch);
 
 	}
 }
