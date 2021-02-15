@@ -95,8 +95,14 @@ void main()
         	do{asm volatile("nop");}while(*KERNEL_UART0_FR&0x20);
         	/* write the character to the buffer */
         	*KERNEL_UART0_DR=*MmuString++;
-	} //This function exists already. don't worry all the kernel code will change any way not sure if this is really how this works though ok let's hit it!
-	uart_loadOutputFifo();
+	} //This function exists already. 
+	//don't worry all the kernel code will change any way 
+	//not sure if this is really how this works though 
+	//ok let's hit it!
+	for(int i = 0; i < 100; ++i)
+	{
+		ReadAndWriteByte();
+	}
 	//"start screen"
 	
 	drawRect(200, 25, 700, 800, 0x0A, 0);

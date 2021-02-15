@@ -180,6 +180,11 @@ void WriteByteToUART(unsigned char ch)
     WriteMMIO(AUX_MU_IO_REG, (unsigned int)ch);
 }
 
+void ReadAndWriteByte()
+{
+	WriteByteToUART(uart_readByte());
+}
+
 void uart_loadOutputFifo()
 {
 	while (!uart_isOutputQueueEmpty() && uart_isWriteByteReady())
@@ -203,7 +208,7 @@ void WriteTextUart(char *buffer)
 {
     while (*buffer) 
     {
-       WriteByteQueue(*buffer++); 
+      WriteByteToUART(*buffer++); 
     }
 }
 
