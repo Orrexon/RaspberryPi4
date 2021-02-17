@@ -19,7 +19,7 @@
 #define PT_DEV	  (1<<2)   // device MMIO
 #define PT_NC	  (2<<2)   // non cacheable
 
-#define TTBR_CNP  1
+#define TTBR_ENABLE  1
 
 //get addresses from linker
 extern volatile unsigned char _data;
@@ -92,7 +92,7 @@ void MMUInit()
 		PT_MEM; 	//normal memory
 	
 	//kernel L3
-	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x00215000) | //physical address NOTE Oscar: same as "AUX_BASE" uart base?
+	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x00215040) | //physical address NOTE Oscar: same as "AUX_BASE" uart base?
 		PT_PAGE | 	//we have area in it mapped by pages
 		PT_AF |		//accessed flag
 		PT_NX |		//no execute
@@ -139,11 +139,11 @@ void MMUInit()
 		(25LL   << 0);		//T0SZ=25 3 levels (512G)
 	asm volatile ("msr tcr_el1, %0; isb" : : "r" (reg));
 
-	//tell the mmu where our translation tables are. TTBR_CNP bit not documented but required
+	//tell the mmu where our translation tables are. TTBR_ENABLE bit not documented but required
 	//lower half: user space
-	asm volatile ("msr ttbr0_el1, %0" : : "r" ((unsigned long)&_end + TTBR_CNP));
+	asm volatile ("msr ttbr0_el1, %0" : : "r" ((unsigned long)&_end + TTBR_ENABLE));
 	//higher half: kernel space
-	asm volatile ("msr ttbr1_el1, %0" : : "r" ((unsigned long)&_end + TTBR_CNP + PAGESIZE));
+	asm volatile ("msr ttbr1_el1, %0" : : "r" ((unsigned long)&_end + TTBR_ENABLE + PAGESIZE));
 
 	//finally toggle some bits in system control register to enable page translation
 	asm volatile ("dsb ish; isb; mrs %0, sctlr_el1" : "=r" (reg));
