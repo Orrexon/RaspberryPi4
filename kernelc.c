@@ -2,41 +2,7 @@
 #include "framebuffer.h"
 #include "timing.h"
 #include "mmu.h"
-
-//move this baby somewhere
-char* parse_ulong(int num, int base_)
-{
-	if(base_ < 2)
-	{
-		base_ = 2;
-	}
-	else if(base_ > 16)
-	{
-		base_ = 16;
-	}
-    	static char result[32] = {0}; //this will be static (local persist) until I have "malloc". unless I keep it like this
-    	char *ptr1 = &result[0], tmp_char;
-    	int tmp_value;
-    	int base = base_;
-
-	//TODO Oscar: add support for the character '.' to be able to print floats
-    	int index = 0;
-    	do {
-        	tmp_value = num;
-        	num /= base;
-        	result[index++] = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - num * base)];
-    	} while ( num );
-
-    	// Apply negative sign
-    	if (tmp_value < 0) result[index++] = '-';
-    	result[index--] = '\0';
-    	while(ptr1 < &result[index]) {
-        	tmp_char = result[index];
-        	result[index--]= *ptr1;
-        	*ptr1++ = tmp_char;
-    	}
-    	return &result[0];
-}
+#include "string_util.h"
 
 unsigned char getKey()
 {
@@ -49,28 +15,8 @@ unsigned char getKey()
 }
 
 
-void ConCat(char* first, char* second)
-{
-	int countFirst = 0;
-	while(*(first + countFirst) != '\0')
-	{
-		++countFirst;
-	}
-
-	int countSecond = 0;
-	while(*(second + countSecond) != '\0')
-	{
-		*(first + countFirst) = *(second + countSecond);
-		++countFirst;
-		++countSecond;	
-	}
-
-	*(first + countFirst) = '\0';
-}
-
-
-#define KERNEL_UART0_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00000) //IO_REGISTER
-#define KERNEL_UART0_LSR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
+#define KERNEL_MU_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00000) //IO_REGISTER
+#define KERNEL_MU_LSR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
 
 void main()
 {
@@ -96,9 +42,9 @@ void main()
 		{
 			asm volatile("nop");	
         		WriteTextUart("Stuck in the loop, eh? \r\n");
-		}while(*KERNEL_UART0_LSR & 0x20);
+		}while(*KERNEL_MU_LSR & 0x20);
         	WriteTextUart("write the character to the buffer\r\n");
-        	*KERNEL_UART0_IO = *MmuString++;
+        	*KERNEL_MU_IO = *MmuString++;
 	} //This function exists already. 
 	//don't worry all the kernel code will change any way 
 	//not sure if this is really how this works though 
@@ -128,8 +74,8 @@ void main()
 		
 		unsigned long deltaFromFunc = millisec_count_delta(clearStart);
 		char* deltaFromFuncString = parse_ulong(deltaFromFunc, 10);
-		ConCat( deltaFromFuncString, "\r\n"); 
-		ConCat( deltaClearString, "\r\n"); 
+		Concat( deltaFromFuncString, "\r\n"); 
+		Concat( deltaClearString, "\r\n"); 
 		WriteTextUart(deltaFromFuncString);
 		WriteTextUart(deltaClearString);
 		

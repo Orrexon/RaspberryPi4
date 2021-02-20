@@ -31,8 +31,14 @@ timing.o: timing.c
 mmu.o: mmu.c
 	gcc $(GCCFLAGS) -c mmu.c -o mmu.o
 
-kernel8.img: kernelc.o ioc.o boot.o framebuffer.o mailbox_vc.o timing.o mmu.o
-	ld -nostdlib -nostartfiles boot.o ioc.o mailbox_vc.o framebuffer.o timing.o mmu.o kernelc.o -T link.ld -o kernel8.elf
+exception.o: exception.c
+	gcc $(GCCFLAGS) -c exception.c -o exception.o
+
+string_util.o: string_util.c
+	gcc $(GCCFLAGS) -c string_util.c -o string_util.o
+
+kernel8.img: kernelc.o exception.o ioc.o boot.o framebuffer.o mailbox_vc.o timing.o mmu.o string_util.o
+	ld -nostdlib -nostartfiles boot.o exception.o ioc.o mailbox_vc.o framebuffer.o timing.o mmu.o string_util.o kernelc.o -T link.ld -o kernel8.elf
 	objcopy -O binary kernel8.elf kernel8.img
 
 clean:

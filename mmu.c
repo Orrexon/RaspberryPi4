@@ -92,7 +92,7 @@ void MMUInit()
 		PT_MEM; 	//normal memory
 	
 	//kernel L3
-	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x00215040) | //physical address NOTE Oscar: same as "AUX_BASE" uart base?
+	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x00215000) | //physical address NOTE Oscar: same as "AUX_BASE" uart base?
 		PT_PAGE | 	//we have area in it mapped by pages
 		PT_AF |		//accessed flag
 		PT_NX |		//no execute

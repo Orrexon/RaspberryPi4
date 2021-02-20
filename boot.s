@@ -24,6 +24,10 @@ TWO:
 	movk x2, #0x30D0, lsl #16
 	msr sctlr_el1, x2
 
+	//exception handlers
+	ldr x2, =_vectors
+	msr vbar_el1, x2
+
 	#clean the bss
 	ldr x1, =__bss_start
 	ldr x2, =__bss_size
@@ -39,3 +43,45 @@ FOUR:
 //	bl main_asm
 	bl main
 	b ONE
+
+
+
+
+
+.align 11
+_vectors:
+//synchronous
+.align 7
+	mov x0, #0
+	mrs x1, esr_el1
+	mrs x2, elr_el1
+	mrs x3, spsr_el1
+	mrs x4, far_el1
+	b RunHandler
+
+//IRQ
+.align 7
+	mov x0, #1
+	mrs x1, esr_el1
+	mrs x2, elr_el1
+	mrs x3, spsr_el1
+	mrs x4, far_el1
+	b RunHandler
+	
+//FIQ
+.align 7
+	mov x0, #2
+	mrs x1, esr_el1
+	mrs x2, elr_el1
+	mrs x3, spsr_el1
+	mrs x4, far_el1
+	b RunHandler
+
+//SError
+.align 7
+	mov x0, #3
+	mrs x1, esr_el1
+	mrs x2, elr_el1
+	mrs x3, spsr_el1
+	mrs x4, far_el1
+	b RunHandler
