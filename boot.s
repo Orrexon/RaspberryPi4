@@ -19,6 +19,20 @@ TWO:
 	ldr x1, =_start
 	mov sp, x1
 
+FIVE1:  cmp     x0, #4
+    	beq     FIVE2
+    	msr     sp_el1, x1
+    	// enable CNTP for EL1
+   	mrs     x0, cnthctl_el2
+   	orr     x0, x0, #3
+   	msr     cnthctl_el2, x0
+    	msr     cntvoff_el2, xzr
+   	// enable AArch64 in EL1
+   	mov     x0, #(1 << 31)      // AArch64
+    	orr     x0, x0, #(1 << 1)   // SWIO hardwired on Pi3
+   	msr     hcr_el2, x0
+    	mrs     x0, hcr_el2
+
 //enable some things in the system control register
 	mov x2, #0x0800
 	movk x2, #0x30D0, lsl #16
@@ -31,10 +45,11 @@ TWO:
 	mov x2, #0x3C4
 	msr spsr_el2, x2
 	
-	adr x2, FIVE
+	adr x2, FIVE2
 	msr elr_el2, x2
 	eret
 
+FIVE2:	mov sp, x1
 	#clean the bss
 	ldr x1, =__bss_start
 	ldr x2, =__bss_size
@@ -45,7 +60,6 @@ THREE:	cbz x2, FOUR
 	 #keep going until r2 is zero
 	cbnz x2,THREE
 
-FIVE:	mov sp, x1
 FOUR:	
 	#jump to program
 //	bl main_asm
