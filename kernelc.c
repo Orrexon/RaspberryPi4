@@ -44,7 +44,7 @@ void main()
 			asm volatile("nop");	
         		WriteTextUart("Stuck in the loop, eh? \r\n");
 		}while((*(volatile unsigned int* )0xFFFFFFFFFFE00054) & 0x20);//*KERNEL_MU_LSR & 0x20);
-        	WriteTextUart("write the character to the buffer\r\n");
+        	WriteTextUart("write the character into the buffer\r\n");
         	(*(volatile unsigned int* )0xFFFFFFFFFFE00040) = *MmuString++;//*KERNEL_MU_IO = *MmuString++;
 	} //This function exists already. 
 	//don't worry all the kernel code will change any way 
