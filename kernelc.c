@@ -14,9 +14,10 @@ unsigned char getKey()
 	return Result;
 }
 
-
-#define KERNEL_MU_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00040) //IO_REGISTER
-#define KERNEL_MU_LSR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
+ //IO_REGISTER
+#define KERNEL_MU_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00040)
+//LSR_REGISTER
+#define KERNEL_MU_LSR ((volatile unsigned int* )0xFFFFFFFFFFE00054) 
 
 void main()
 {
@@ -42,9 +43,9 @@ void main()
 		{
 			asm volatile("nop");	
         		WriteTextUart("Stuck in the loop, eh? \r\n");
-		}while(*KERNEL_MU_LSR & 0x20);
+		}while((*(volatile unsigned int* )0xFFFFFFFFFFE00054) & 0x20);//*KERNEL_MU_LSR & 0x20);
         	WriteTextUart("write the character to the buffer\r\n");
-        	*KERNEL_MU_IO = *MmuString++;
+        	(*(volatile unsigned int* )0xFFFFFFFFFFE00040) = *MmuString++;//*KERNEL_MU_IO = *MmuString++;
 	} //This function exists already. 
 	//don't worry all the kernel code will change any way 
 	//not sure if this is really how this works though 
