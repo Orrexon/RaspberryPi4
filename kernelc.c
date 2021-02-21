@@ -15,7 +15,7 @@ unsigned char getKey()
 }
 
 
-#define KERNEL_MU_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00000) //IO_REGISTER
+#define KERNEL_MU_IO  ((volatile unsigned int* )0xFFFFFFFFFFE00040) //IO_REGISTER
 #define KERNEL_MU_LSR ((volatile unsigned int* )0xFFFFFFFFFFE00054) //LSR_REGISTER
 
 void main()
@@ -48,7 +48,7 @@ void main()
 	} //This function exists already. 
 	//don't worry all the kernel code will change any way 
 	//not sure if this is really how this works though 
-	//ok let's hit it!
+	WriteTextUart("ok let's hit it! \r\n");
 	for(int i = 0; i < 100; ++i)
 	{
 		ReadAndWriteByte();
