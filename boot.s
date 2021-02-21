@@ -28,6 +28,13 @@ TWO:
 	ldr x2, =_vectors
 	msr vbar_el1, x2
 
+	mov x2, #0x3C4
+	msr spsr_el2, x2
+	
+	adr x2, FIVE
+	msr elr_el2, x2
+	eret
+
 	#clean the bss
 	ldr x1, =__bss_start
 	ldr x2, =__bss_size
@@ -36,8 +43,9 @@ THREE:	cbz x2, FOUR
 
 	sub x2, x2, #1
 	 #keep going until r2 is zero
-	cbnz x2,THREE 
+	cbnz x2,THREE
 
+FIVE:	mov sp, x1
 FOUR:	
 	#jump to program
 //	bl main_asm
