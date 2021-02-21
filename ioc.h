@@ -1,5 +1,6 @@
 #if !defined IOC_H
 #define PERIPHERAL_BASE 0xFE000000
+#define LEGACY_PERIPHERAL_BASE 0x7E000000
 
 void uart_init_c();
 void WriteTextUart(char* buffer);
