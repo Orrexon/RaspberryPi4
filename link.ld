@@ -13,6 +13,23 @@ SECTIONS
 		*(COMMON)
 		__bss_end = .;
 	}
+	.cpu1Stack :
+    	{
+        	. = ALIGN(16);
+        	__stack_start  = .;
+        	. = . + 512;
+        	__cpu1_stack  = .;
+    	}
+    	.cpu2Stack :
+    	{
+        	. = . + 512;
+        	__cpu2_stack  = .;
+    	}
+    	.cpu3Stack :
+    	{
+        	. = . + 512;
+        	__cpu3_stack  = .;
+    	}
 	. = ALIGN(4096);
 	_end = .;
 
