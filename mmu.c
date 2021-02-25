@@ -91,7 +91,7 @@ void MMUInit()
 		PT_ISH | 	//inner sharable
 		PT_MEM; 	//normal memory
 	
-	//kernel L3
+	//kernel L3 <--it is not supposed to have L3 cache from what I understand, or is it something else?  
 	Paging[5*512] = (unsigned long)(PERIPHERAL_BASE + 0x215000) | //physical address
 		PT_PAGE | 	//we have area in it mapped by pages
 		PT_AF |		//accessed flag
