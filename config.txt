@@ -65,3 +65,7 @@ max_framebuffers=2
 #dtoverlay=vc4-fkms-v3d
 core_freq_min=500
 enable_uart=1
+kernel_old=1
+disable_command_line_tags=1
+arm_64bit=1
+
